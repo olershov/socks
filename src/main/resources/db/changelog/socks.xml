@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="001_ddl_create_table_socks" author="OErshov">
+        <createTable tableName="t_socks">
+            <column name="id" type="bigserial">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="color" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="count" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cotton_percent" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="version" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint
+                tableName="t_socks"
+                columnNames="color, cotton_percent"
+                constraintName="uq_color_cotton_percent"/>
+    </changeSet>
+
+    <changeSet id="002_dml_insert_into_socks" author="OErshov">
+        <insert tableName="t_socks">
+            <column name="color" value="Red"/>
+            <column name="count" value="0"/>
+            <column name="cotton_percent" value="50"/>
+            <column name="version" value="1"/>
+        </insert>
+
+        <insert tableName="t_socks">
+            <column name="color" value="Blue"/>
+            <column name="count" value="0"/>
+            <column name="cotton_percent" value="90"/>
+            <column name="version" value="1"/>
+        </insert>
+
+        <insert tableName="t_socks">
+            <column name="color" value="Green"/>
+            <column name="count" value="0"/>
+            <column name="cotton_percent" value="70"/>
+            <column name="version" value="1"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
