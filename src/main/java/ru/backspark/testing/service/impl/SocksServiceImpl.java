@@ -46,6 +46,17 @@ public class SocksServiceImpl implements SocksService {
         return socksConverter.toDto(socksRepository.save(socksFromDb));
     }
 
+    @Override
+    public SocksDto update(Long id, SocksDto dto) {
+        var entity = socksRepository.findById(id).orElseThrow(
+                () -> new ObjectNotFoundException("Socks with id=" + id + " not found")
+        );
+        entity.setColor(dto.getColor());
+        entity.setCottonPercentContent(dto.getCottonPercentContent());
+        entity.setCount(dto.getCount());
+        return socksConverter.toDto(socksRepository.save(entity));
+    }
+
     private int calculateCount(int before, int income) {
         return before + income;
     }

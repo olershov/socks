@@ -40,6 +40,17 @@ public class AccountingController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Изменение параметров", notes = "Изменение параметров")
+    @PutMapping("/{id}")
+    public ResponseEntity<SocksDto> update(@PathVariable("id") Long socksId,
+                                           @Valid @RequestBody SocksDto socksDto) {
+        LOGGER.info("Запрос на изменение параметров носков с id=%d".formatted(socksId));
+        var result = socksService.update(socksId, socksDto);
+        LOGGER.info("Параметры обновлены: {}", result);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+
    /* @ApiOperation(value = "Получение общего количества с фильтром", notes = "Получение общего количества с фильтром")
     @GetMapping("")
     public ResponseEntity<?> outcome(@Valid @RequestBody SocksEntity socks) {
@@ -47,14 +58,7 @@ public class AccountingController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Изменение параметров", notes = "Изменение параметров")
-    @PutMapping("/{id}")
-    public ResponseEntity<?> outcome(@PathVariable("cluster_id") Long clusterId,
-                                     @PathVariable("switch_id") Long switchId,
-                                     @RequestBody ClusterSwitchHostDTOs switchHostDTOs) {
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
 
     @ApiOperation(value = "Изменение параметров", notes = "Изменение параметров")
     @PostMapping("/batch")

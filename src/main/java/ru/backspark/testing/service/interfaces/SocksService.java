@@ -6,5 +6,5 @@ public interface SocksService {
 
     SocksDto calculateIncome(SocksDto dto);
     SocksDto calculateOutcome(SocksDto dto);
-
+    SocksDto update(Long id, SocksDto dto);
 }
