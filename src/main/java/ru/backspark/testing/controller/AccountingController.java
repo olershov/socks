@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.backspark.testing.model.dto.SocksDto;
 import ru.backspark.testing.service.interfaces.SocksService;
 
@@ -40,6 +41,13 @@ public class AccountingController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    /*@ApiOperation(value = "Получение общего количества с фильтром", notes = "Получение общего количества с фильтром")
+    @GetMapping("")
+    public ResponseEntity<?> getSocks() {
+        LOGGER.info("Запрос на получение носков".formatted(socksId));
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }*/
+
     @ApiOperation(value = "Изменение параметров", notes = "Изменение параметров")
     @PutMapping("/{id}")
     public ResponseEntity<SocksDto> update(@PathVariable("id") Long socksId,
@@ -51,21 +59,13 @@ public class AccountingController {
     }
 
 
-   /* @ApiOperation(value = "Получение общего количества с фильтром", notes = "Получение общего количества с фильтром")
-    @GetMapping("")
-    public ResponseEntity<?> outcome(@Valid @RequestBody SocksEntity socks) {
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-
-
-
-    @ApiOperation(value = "Изменение параметров", notes = "Изменение параметров")
+    @ApiOperation(value = "Загрузка партий", notes = "Загрузка партий")
     @PostMapping("/batch")
-    public ResponseEntity<?> outcome(@PathVariable("cluster_id") Long clusterId,
-                                     @PathVariable("switch_id") Long switchId,
-                                     @RequestBody ClusterSwitchHostDTOs switchHostDTOs) {
-
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }*/
+    public ResponseEntity<String> uploadBatch(@RequestParam("file") MultipartFile file) {
+        LOGGER.info("Запрос на добавление партии носков из файла %s".formatted(file.getOriginalFilename()));
+        socksService.uploadBatch(file);
+        LOGGER.info("Запрос на добавление партии носков из файла %s успешно выполнен".formatted(file.getOriginalFilename()));
+        return new ResponseEntity<>("Партия успешно сохранена", HttpStatus.OK);
+    }
 }

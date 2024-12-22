@@ -2,9 +2,11 @@ package ru.backspark.testing.model.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+@NoArgsConstructor
 @Entity
 @Getter
 @Setter
@@ -25,4 +27,10 @@ public class SocksEntity extends BaseEntity {
 
     @Version
     private Long version;
+
+    public SocksEntity(String color, Integer count, Integer cottonPercentContent) {
+        this.color = color;
+        this.count = count;
+        this.cottonPercentContent = cottonPercentContent;
+    }
 }
