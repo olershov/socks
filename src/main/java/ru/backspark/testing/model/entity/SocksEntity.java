@@ -28,7 +28,7 @@ public class SocksEntity extends BaseEntity {
     @Version
     private Long version;
 
-    public SocksEntity(String color, Integer count, Integer cottonPercentContent) {
+    public SocksEntity(String color, Integer cottonPercentContent, Integer count) {
         this.color = color;
         this.count = count;
         this.cottonPercentContent = cottonPercentContent;

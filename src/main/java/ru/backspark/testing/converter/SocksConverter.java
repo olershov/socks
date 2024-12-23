@@ -17,6 +17,7 @@ public class SocksConverter {
 
     public SocksDto toDto(SocksEntity entity) {
         return SocksDto.builder()
+                .id(entity.getId())
                 .color(entity.getColor())
                 .count(entity.getCount())
                 .cottonPercentContent(entity.getCottonPercentContent())

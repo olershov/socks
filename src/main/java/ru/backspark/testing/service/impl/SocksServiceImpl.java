@@ -66,6 +66,7 @@ public class SocksServiceImpl implements SocksService {
         return socksConverter.toDto(socksRepository.save(entity));
     }
 
+    @Transactional
     @Override
     public void uploadBatch(MultipartFile file) {
         checkFile(file);

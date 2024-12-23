@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'ru.backspark'
-version = '0.0.1-SNAPSHOT'
+version = '1.0-SNAPSHOT'
 
 java {
 	toolchain {
@@ -33,16 +33,24 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	implementation 'io.springfox:springfox-swagger2:2.9.2'
 	implementation 'io.springfox:springfox-swagger-ui:2.10.0'
-	implementation 'org.hibernate.validator:hibernate-validator:6.2.0.Final'
-	implementation 'javax.validation:validation-api:2.0.1.Final'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.liquibase:liquibase-core'
 	implementation 'org.apache.poi:poi:4.1.0'
 	implementation 'org.apache.poi:poi-ooxml:4.1.0'
 	implementation 'org.apache.poi:poi-ooxml-schemas:4.1.0'
 	implementation 'org.apache.xmlbeans:xmlbeans:3.1.0'
+	testImplementation 'junit:junit:4.13.1'
+	testImplementation 'com.h2database:h2'
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+	useJUnit()
+}
+
+jar {
+	manifest {
+		attributes(
+				'Main-Class': 'ru.backspark.testing.Application'
+		)
+	}
 }

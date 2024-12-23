@@ -13,7 +13,7 @@ import ru.backspark.testing.model.dto.SocksDto;
 import ru.backspark.testing.model.dto.SocksFilterParams;
 import ru.backspark.testing.service.interfaces.SocksService;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -50,7 +50,8 @@ public class AccountingController {
                                                    @RequestParam(required = false) Integer cottonPercentMax,
                                                    @RequestParam(required = false, defaultValue = "color") String sortBy,
                                                    @RequestParam(required = false, defaultValue = "true") Boolean ascending) {
-        var params = new SocksFilterParams(color.toLowerCase(), cottonPercentMin, cottonPercentMax, sortBy, ascending);
+        color = color == null ? null : color.toLowerCase();
+        var params = new SocksFilterParams(color, cottonPercentMin, cottonPercentMax, sortBy, ascending);
         LOGGER.info("Запрос на получение носков: {}", params);
         List<SocksDto> socks = socksService.findWithFilter(params);
         LOGGER.info("Запрос выполнен: {}", socks);

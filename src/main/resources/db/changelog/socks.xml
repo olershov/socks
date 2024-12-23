@@ -6,6 +6,11 @@
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
     <changeSet id="001_ddl_create_table_socks" author="OErshov">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="t_socks"/>
+            </not>
+        </preConditions>
         <createTable tableName="t_socks">
             <column name="id" type="bigserial">
                 <constraints primaryKey="true" nullable="false"/>

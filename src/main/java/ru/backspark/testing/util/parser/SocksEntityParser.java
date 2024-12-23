@@ -34,6 +34,6 @@ public class SocksEntityParser {
         int count = row.getCell(2) != null && row.getCell(2).getCellType() == CellType.NUMERIC
                 ? (int) row.getCell(2).getNumericCellValue() : 0;
 
-        return new SocksEntity(color.toLowerCase(), count, cottonPercent);
+        return new SocksEntity(color.toLowerCase(), cottonPercent, count);
     }
 }
