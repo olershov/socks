@@ -32,21 +32,21 @@
 
     <changeSet id="002_dml_insert_into_socks" author="OErshov">
         <insert tableName="t_socks">
-            <column name="color" value="Red"/>
+            <column name="color" value="красный"/>
             <column name="count" value="0"/>
             <column name="cotton_percent" value="50"/>
             <column name="version" value="1"/>
         </insert>
 
         <insert tableName="t_socks">
-            <column name="color" value="Blue"/>
+            <column name="color" value="синий"/>
             <column name="count" value="0"/>
             <column name="cotton_percent" value="90"/>
             <column name="version" value="1"/>
         </insert>
 
         <insert tableName="t_socks">
-            <column name="color" value="Green"/>
+            <column name="color" value="зеленый"/>
             <column name="count" value="0"/>
             <column name="cotton_percent" value="70"/>
             <column name="version" value="1"/>

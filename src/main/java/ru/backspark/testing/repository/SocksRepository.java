@@ -9,5 +9,5 @@ import java.util.Optional;
 @Repository
 public interface SocksRepository extends JpaRepository<SocksEntity, Long> {
 
-    Optional<SocksEntity> findByColorIgnoreCaseAndCottonPercentContent(String color, Integer cottonPercent);
+    Optional<SocksEntity> findByColorAndCottonPercentContent(String color, Integer cottonPercent);
 }

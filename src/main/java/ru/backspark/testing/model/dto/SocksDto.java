@@ -5,12 +5,14 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 
 @Data
 @Builder
+@Getter
 public class SocksDto {
 
     @NotBlank(message = "Поле цвет не может быть пустыми")

@@ -8,28 +8,30 @@ import ru.backspark.testing.converter.SocksConverter;
 import ru.backspark.testing.exception.InvalidDataException;
 import ru.backspark.testing.exception.ObjectNotFoundException;
 import ru.backspark.testing.model.dto.SocksDto;
+import ru.backspark.testing.model.dto.SocksFilterParams;
 import ru.backspark.testing.model.entity.SocksEntity;
+import ru.backspark.testing.repository.EmSocksRepository;
 import ru.backspark.testing.repository.SocksRepository;
 import ru.backspark.testing.service.interfaces.SocksService;
-import ru.backspark.testing.util.XlsParser;
+import ru.backspark.testing.util.parser.SocksEntityParser;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
-@Service
 @RequiredArgsConstructor
+@Service
 public class SocksServiceImpl implements SocksService {
 
     private final SocksRepository socksRepository;
+    private final EmSocksRepository emSocksRepository;
     private final SocksConverter socksConverter;
-    private final XlsParser xlsParser;
+    private final SocksEntityParser socksEntityParser;
 
     @Transactional
     @Override
     public SocksDto calculateIncome(SocksDto dto) {
         SocksEntity forSave = socksConverter.toEntity(dto);
-        var socksFromDbOpt = socksRepository.findByColorIgnoreCaseAndCottonPercentContent(dto.getColor(), dto.getCottonPercentContent());
+        var socksFromDbOpt = socksRepository.findByColorAndCottonPercentContent(dto.getColor().toLowerCase(), dto.getCottonPercentContent());
         if (socksFromDbOpt.isPresent()) {
             forSave = socksFromDbOpt.get();
             forSave.setCount(calculateCount(forSave.getCount(), dto.getCount()));
@@ -40,7 +42,7 @@ public class SocksServiceImpl implements SocksService {
     @Transactional
     @Override
     public SocksDto calculateOutcome(SocksDto dto) {
-        var socksFromDbOpt = socksRepository.findByColorIgnoreCaseAndCottonPercentContent(dto.getColor(), dto.getCottonPercentContent());
+        var socksFromDbOpt = socksRepository.findByColorAndCottonPercentContent(dto.getColor().toLowerCase(), dto.getCottonPercentContent());
         if (socksFromDbOpt.isEmpty()) {
             throw new ObjectNotFoundException(String.format("Socks with color=%s and cotton_percent=%d not found", dto.getColor(), dto.getCottonPercentContent()));
         }
@@ -67,8 +69,14 @@ public class SocksServiceImpl implements SocksService {
     @Override
     public void uploadBatch(MultipartFile file) {
         checkFile(file);
-        var socks = xlsParser.xlsxToSocksEntity(file);
+        var socks = socksEntityParser.parse(file);
         this.saveBatch(socks);
+    }
+
+    @Override
+    public List<SocksDto> findWithFilter(SocksFilterParams params) {
+        var socksEntities = emSocksRepository.getFilteredSocks(params);
+        return socksEntities.stream().map(socksConverter::toDto).toList();
     }
 
     private void checkFile(MultipartFile file) {
@@ -88,7 +96,7 @@ public class SocksServiceImpl implements SocksService {
     private void saveBatch(List<SocksEntity> entities) {
         List<SocksEntity> listForSave = new ArrayList<>();
         entities.forEach(socks -> {
-            var optionalFromDb = socksRepository.findByColorIgnoreCaseAndCottonPercentContent(socks.getColor(), socks.getCottonPercentContent());
+            var optionalFromDb = socksRepository.findByColorAndCottonPercentContent(socks.getColor().toLowerCase(), socks.getCottonPercentContent());
             if (optionalFromDb.isEmpty()) {
                 listForSave.add(socks);
             } else {

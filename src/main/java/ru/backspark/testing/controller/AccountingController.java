@@ -10,9 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.backspark.testing.model.dto.SocksDto;
+import ru.backspark.testing.model.dto.SocksFilterParams;
 import ru.backspark.testing.service.interfaces.SocksService;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -41,12 +43,19 @@ public class AccountingController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    /*@ApiOperation(value = "Получение общего количества с фильтром", notes = "Получение общего количества с фильтром")
+    @ApiOperation(value = "Получение общего количества с фильтром", notes = "Получение общего количества с фильтром")
     @GetMapping("")
-    public ResponseEntity<?> getSocks() {
-        LOGGER.info("Запрос на получение носков".formatted(socksId));
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }*/
+    public ResponseEntity<List<SocksDto>> getSocks(@RequestParam(required = false) String color,
+                                                   @RequestParam(required = false) Integer cottonPercentMin,
+                                                   @RequestParam(required = false) Integer cottonPercentMax,
+                                                   @RequestParam(required = false, defaultValue = "color") String sortBy,
+                                                   @RequestParam(required = false, defaultValue = "true") Boolean ascending) {
+        var params = new SocksFilterParams(color.toLowerCase(), cottonPercentMin, cottonPercentMax, sortBy, ascending);
+        LOGGER.info("Запрос на получение носков: {}", params);
+        List<SocksDto> socks = socksService.findWithFilter(params);
+        LOGGER.info("Запрос выполнен: {}", socks);
+        return new ResponseEntity<>(socks, HttpStatus.OK);
+    }
 
     @ApiOperation(value = "Изменение параметров", notes = "Изменение параметров")
     @PutMapping("/{id}")
